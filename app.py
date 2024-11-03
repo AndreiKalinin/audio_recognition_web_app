@@ -7,7 +7,7 @@ import io
 from time import sleep
 from datetime import datetime
 import pandas as pd
-from waitress import serve
+import gevent.pywsgi
 from audio_transcription.transcribe_audio import AudioTranscriber
 
 
@@ -65,4 +65,5 @@ def submit():
 
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5000)
+    app_server = gevent.pywsgi.WSGIServer(('0.0.0.0', 5000), app)
+    app_server.serve_forever()
